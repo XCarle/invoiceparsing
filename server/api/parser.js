@@ -1,6 +1,7 @@
 const pdfParserService = require('../services/pdfParser');
 
 exports.extractVatNumbers = (req, res, next) => {
+
   const file = req.files ? req.files.invoice : null;
 
   if (!file) {
@@ -9,7 +10,7 @@ exports.extractVatNumbers = (req, res, next) => {
   if (file.mimetype !== 'application/pdf') {
     return res.status(400).json({ err: 'Invalid file type'});
   }
-  
+
   return pdfParserService
     .extractVatNumbersFromFile(file)
     .then(vatNumbers => res.json(vatNumbers))
