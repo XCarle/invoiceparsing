@@ -2,13 +2,13 @@ const pdfParserService = require('../services/pdfParser');
 
 exports.extractVatNumbers = (req, res, next) => {
 
-  const file = req.files ? req.files.invoice : null;
+  console.log(req.query.file);
+  const file = req.query.file;
 
+  console.log("file : ",file);
   if (!file) {
+    console.log('no file found', req.body);
     return res.status(400).json({ err: 'No file found' });
-  }
-  if (file.mimetype !== 'application/pdf') {
-    return res.status(400).json({ err: 'Invalid file type'});
   }
 
   return pdfParserService

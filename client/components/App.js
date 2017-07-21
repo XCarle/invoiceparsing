@@ -9,7 +9,6 @@ export default class App extends Component {
       value: 'Your PDF invoice',
       uploadedFileCloudinaryUrl:''
     };
-
   }
 
   onPDFDrop(files) {
@@ -18,27 +17,28 @@ export default class App extends Component {
     });
 
     this.handlePDFUpload(files[0]);
+
+    const fileReader = new FileReader();
+    fileReader.readAsText(files[0]);
+    fileReader.onload = function(e){
+      console.log(fileReader.result);
+    };
+    fileReader.onloadend = this.handlePDFUpload(files[0]);
+    console.log("result : ", fileReader.result);
   }
 
   handlePDFUpload(file) {
     console.log("file", file);
-    let upload = request.post("/extract-vat-numbers")
-                        .field('file', file[0]);
-
-    upload.end((err, response) => {
-      if (err) {
-        console.error(err);
+    fetch("/extract-vat-numbers?file="+JSON.stringify({file}), {
+      method:'POST',
+      headers: {
+        'Accept': 'application/pdf',
+        'Content-Type': 'application/pdf',
       }
-
-      console.log("Response to POST : ", response);
-      // TODO
-
-      //if (response.body.secure_url !== '') {
-      //  this.setState({
-      //    uploadedFileCloudinaryUrl: response.body.secure_url
-      //  });
-      //}
+    }).then(function(response){
+      console.log("response : ",response);
     });
+
   }
 
   render() {
