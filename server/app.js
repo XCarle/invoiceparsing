@@ -2,9 +2,10 @@ const express = require('express');
 const path = require('path');
 const router = require('./router');
 
-const pdfReader = require('pdfreader');
-
 const app = express();
+
+const fs = require("fs");
+
 
 const parser = require('./api/parser');
 
